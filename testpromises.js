@@ -48,7 +48,7 @@ switch (testNumber) {
 
   case 11:
     {
-      promiseAllTest();
+      promiseAll();
       break;
     }
 
@@ -60,6 +60,7 @@ switch (testNumber) {
 
   case 13:
     {
+      // Only supported in Node.js 15.0.0
       promiseAny();
       break;
     }
@@ -98,9 +99,8 @@ async function cleanLookingPromises() {
     let response = await conventionalPromiseFactory();
     // Will block
     await console.log(`Awaiting response ${response}`);
-    // Will block
+
     console.log(`Not waiting for response ${response}`);
-    // Will block
     console.log(`Also not waiting for response ${response}`);
 
   } catch (error) {
@@ -109,13 +109,16 @@ async function cleanLookingPromises() {
   }
 }
 
-function promiseAllTest() {
+function promiseAll() {
   // Promise.all waits for all promises to be resolved, or for any to be rejected
   // If it resolves an array containing all the return values for the promises is returned
   // If it rejects then the reason for rejection in in the return value.
 
   // The result is that all three promises complete in their own time
   // but the second promise ended up in the catch body and no other processing occures.
+
+  // Use this when you want all promises to complete or reject when anyone of them rejects
+
   Promise.all([conventionalPromiseFactory(3, true),
   conventionalPromiseFactory(10, false),
   conventionalPromiseFactory(19, true)])
@@ -126,6 +129,8 @@ function promiseAllTest() {
 function promiseAllSettled() {
   // All promises will be resolved and the then cod will be run and all results
   // Will be shown in the array.
+
+  // Use when you want a resoponse fron every promise either resolved or rejected
   Promise.allSettled([conventionalPromiseFactory(3, true),
   conventionalPromiseFactory(10, false),
   conventionalPromiseFactory(19, true)])
