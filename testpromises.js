@@ -140,6 +140,8 @@ function promiseAllSettled() {
 
 function promiseAny() {
   // Will stop on the first fullfilled promise and return a promise that returns its value
+
+  // Use when you want the first promise that fulfills and resolves
   Promise.any([conventionalPromiseFactory(5, false),
   conventionalPromiseFactory(8, true),
   conventionalPromiseFactory(19, false)])
@@ -149,6 +151,8 @@ function promiseAny() {
 
 function promiseRace() {
   // Wait till one promise either resolves or rejects and return that first promises return value
+
+  // Use when you want the first resolve or reject from all the promises.
   Promise.race([conventionalPromiseFactory(5, false),
   conventionalPromiseFactory(8, true),
   conventionalPromiseFactory(19, false)])
