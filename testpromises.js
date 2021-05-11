@@ -1,6 +1,8 @@
 
 /*jshint esversion:8*/
 
+const { reject, delay } = require("q");
+
 // Goal Explore Promises and timers in Node.js
 
 /* setTime type signature
@@ -19,7 +21,7 @@
 *
 */
 
-let testNumber = 11;
+let testNumber = 12;
 
 switch (testNumber) {
 
@@ -40,13 +42,19 @@ switch (testNumber) {
 
   case 10:
     {
-      concurrentPromises();
+      sequentialPromises();
       break;
     }
 
   case 11:
     {
-      sequentialPromises();
+      promiseAllTest();
+      break;
+    }
+
+  case 12:
+    {
+      promiseAllSettled();
       break;
     }
 
@@ -89,58 +97,75 @@ async function cleanLookingPromises() {
   }
 }
 
-function concurrentPromises() {
-  Promise.all([conventionalPromiseFactory(3), conventionalPromiseFactory(10)])
-    .then(() => { console.log('all concurrent processing complete'); });
+function promiseAllTest() {
+  // Promise.all waits for all promises to be resolved, or for any to be rejected
+  // If it resolves an array containing all the return values for the promises is returned
+  // If it rejects then the reason for rejection in in the return value.
+
+  // The result is that all three promises complete in their own time
+  // but the second promise ended up in the catch body and no other processing occures.
+  Promise.all([conventionalPromiseFactory(3, true),
+               conventionalPromiseFactory(10, false),
+               conventionalPromiseFactory(19, true)])
+    .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
+    .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
+}
+
+function promiseAllSettled() {
+  // All promises will be resolved and the then cod will be run and all results
+  // Will be shown in the array.
+  Promise.allSettled([conventionalPromiseFactory(3, true),
+                      conventionalPromiseFactory(10, false),
+                      conventionalPromiseFactory(19, true)])
+  .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
+  .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
 }
 
 function sequentialPromises() {
   conventionalPromiseFactory(10)
     .then(() => conventionalPromiseFactory(3))
-    .then(() => console.log('complete sequential processing'));
+    .then(conventionalPromiseFactory(10))
+    .then(() => console.log('\nComplete Sequential Processing'));
 }
 
-async function conventionalPromiseFactory(delay) {
+async function conventionalPromiseFactory(delay, eventuallyResolve) {
   return await new Promise((resolve, reject) => {
-    if (delay == 3) {
-      let threesecondreturn = threeSecondDelayedFunctionWithPromiseProcessing(resolve, reject, 'Conventional Promise Factory');
-    } else {
-      let tensecondreturn = tenSecondDelayedFunctionWithPromiseProcessing(resolve, reject, 'Conventional Promise Factory');
-      // Should run immediately
-    }
-
-    //console.log(`Immediately log state of promise ${threesecondreturn} ${tensecondreturn}`);
+    let returnObject =
+      genericDelayedFunction(resolve, reject, delay,
+        'Conventional Promise Factory',
+        eventuallyResolve);
+    console.log(`What is ${delay} second object are we resolving ${eventuallyResolve}`, returnObject);
   });
 }
 
 
-function threeSecondDelayedFunction() {
-  console.log('Three Second Delayed Function called');
-  let properParameter = 'properParameter';
-  setTimeout(messageFromImportantWork, 3000, 'three seconds');
-}
-
-function threeSecondDelayedFunctionWithPromiseProcessing(promiseResolveMethod, promiseRejectMethod, extraMessage) {
-  console.log('Three Second Delayed Function');
-  setTimeout(messageFromImportantWork, 3000, 'three seconds', promiseResolveMethod, promiseRejectMethod, extraMessage);
-}
-
-
-function tenSecondDelayedFunction(promiseResolveMethod, promiseRejectMethod) {
-  console.log('Ten Second Delayed Function called');
-  setTimeout(messageFromImportantWork, 10000, 'ten seconds');
-}
-
-function tenSecondDelayedFunctionWithPromiseProcessing(promiseResolveMethod, promiseRejectMethod, extraMessage) {
-  console.log('Ten Second Delayed Function called');
-  setTimeout(messageFromImportantWork, 10000, 'ten seconds', promiseResolveMethod, promiseRejectMethod, extraMessage);
+function genericDelayedFunction(promiseResolveMethod,
+  promiseRejectMethod,
+  delayTimeInSeconds,
+  extraMessage,
+  forceResolve) {
+  console.log(`${delayTimeInSeconds} second delay function`);
+  let timeInMS = delayTimeInSeconds * 1000;
+  setTimeout(messageFromImportantWork,
+    timeInMS,
+    timeInMS.toString() + 'ms delay',
+    promiseResolveMethod,
+    promiseRejectMethod,
+    extraMessage, forceResolve);
 }
 
 
-function messageFromImportantWork(wrappingParentId, resolveMethod, rejectMethod, messageToPass) {
+function messageFromImportantWork(wrappingParentId, resolveMethod,
+  rejectMethod, messageToPass, forceResolve) {
   let package = 'hello world';
-  console.log(`'${wrappingParentId}' Delay\'s Work Completed and package:${package} and extra message ${messageToPass}`);
-  resolveMethod('42');
+  console.log(`'${wrappingParentId}' seconds Delay\'s Work Completed and package:${package} and extra message ${messageToPass}`);
+  if (forceResolve == false) {
+    console.log('rejecting!');
+    rejectMethod('Was told to reject');
+  } else {
+    console.log('resolving');
+    resolveMethod('42');
+  }
   return 'Some Important Work Done!';
 }
 
