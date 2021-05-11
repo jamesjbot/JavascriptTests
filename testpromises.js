@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 12;
+let testNumber = 13;
 
 switch (testNumber) {
 
@@ -55,6 +55,18 @@ switch (testNumber) {
   case 12:
     {
       promiseAllSettled();
+      break;
+    }
+
+  case 13:
+    {
+      promiseAny();
+      break;
+    }
+
+  case 14:
+    {
+      promiseRace();
       break;
     }
 
@@ -105,8 +117,8 @@ function promiseAllTest() {
   // The result is that all three promises complete in their own time
   // but the second promise ended up in the catch body and no other processing occures.
   Promise.all([conventionalPromiseFactory(3, true),
-               conventionalPromiseFactory(10, false),
-               conventionalPromiseFactory(19, true)])
+  conventionalPromiseFactory(10, false),
+  conventionalPromiseFactory(19, true)])
     .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
     .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
 }
@@ -115,10 +127,28 @@ function promiseAllSettled() {
   // All promises will be resolved and the then cod will be run and all results
   // Will be shown in the array.
   Promise.allSettled([conventionalPromiseFactory(3, true),
-                      conventionalPromiseFactory(10, false),
-                      conventionalPromiseFactory(19, true)])
-  .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
-  .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
+  conventionalPromiseFactory(10, false),
+  conventionalPromiseFactory(19, true)])
+    .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
+    .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
+}
+
+function promiseAny() {
+  // Will stop on the first fullfilled promise and return a promise that returns its value
+  Promise.any([conventionalPromiseFactory(5, false),
+  conventionalPromiseFactory(8, true),
+  conventionalPromiseFactory(19, false)])
+    .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
+    .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
+}
+
+function promiseRace() {
+  // Wait till one promise either resolves or rejects and return that first promises return value
+  Promise.race([conventionalPromiseFactory(5, false),
+  conventionalPromiseFactory(8, true),
+  conventionalPromiseFactory(19, false)])
+    .then(array => { console.log(`\nAll Concurrent Processing complete ${array}`); })
+    .catch(array => { console.log(`\nConcurrent Processes at least 1 rejection; reason: ${array}`); });
 }
 
 function sequentialPromises() {
