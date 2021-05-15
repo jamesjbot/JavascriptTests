@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 15;
+let testNumber = 16;
 
 switch (testNumber) {
 
@@ -78,6 +78,12 @@ switch (testNumber) {
       break;
     }
 
+  case 16:
+    {
+      asyncWithCallback();
+      break;
+    }
+
   default:
     {
       break;
@@ -116,84 +122,96 @@ async function cleanLookingPromises() {
   }
 }
 
+function asyncWithCallback() {
+  funcWithCallback(callback);
+}
+
+async function funcWithCallback(func) {
+  func('Jude');
+}
+
+function callback(message) {
+  console.log(`Hey ${message}!`);
+}
+
 function asyncWrapper() {
   asyncAwaitPromises();
 }
 
 async function asyncAwaitPromises() {
-  (true == false) ? console.log('Hello') : throw 'oops';
-    try {
-      console.log('before first');
-      let firstprom = await conventionalPromiseFactory(3, true); // <--- This is waiting
-      console.log('between 1st and 2nd', firstprom);
-      let secondprom = await conventionalPromiseFactory(firstprom - 40, true);
-      console.log('between 2nd and 3rd <--', secondprom);
-      console.log('between 2nd and 3rd <---', thirdprom);
-      //if (secondprom == 42) throw 'we have the answer to life!';
-      let thirdprom =  await conventionalPromiseFactory( secondprom - 37, true);
-      console.log('final',await thirdprom);
-    } catch (error) {
-      console.log('You have an error:', error);
-    }
-    // console.log('Before Await');
-    // console.log('waiting promise:',await prom);
-    // let somethingelse = await prom; // <-- this is waiting for resolution
-    // console.log('promise:',prom);
-    // console.log('non waiting promise:',prom);
-    // let longpromise = conventionalPromiseFactory( somethingelse - 32, true);
-    // await console.log('somethingelse:',somethingelse);
-    // console.log('non waiting somethingelse:',somethingelse);
-    // //somethingelse.then(console.log('hello'))
-    // //.catch( error => {console.log('error occured',error);});
-    // await console.log('long promise',longpromise);
-    // console.log('After Await');
-    // console.log('long promise',longpromise);
-    // console.log('Never wait');
+  //(true == false) ? console.log('Hello') : throw 'oops';
+  try {
+    console.log('before first');
+    let firstprom = await conventionalPromiseFactory(3, true); // <--- This is waiting
+    console.log('between 1st and 2nd', firstprom);
+    let secondprom = await conventionalPromiseFactory(firstprom - 40, true);
+    console.log('between 2nd and 3rd <--', secondprom);
+    console.log('between 2nd and 3rd <---', thirdprom);
+    //if (secondprom == 42) throw 'we have the answer to life!';
+    let thirdprom = await conventionalPromiseFactory(secondprom - 37, true);
+    console.log('final', await thirdprom);
+  } catch (error) {
+    console.log('You have an error:', error);
+  }
+  // console.log('Before Await');
+  // console.log('waiting promise:',await prom);
+  // let somethingelse = await prom; // <-- this is waiting for resolution
+  // console.log('promise:',prom);
+  // console.log('non waiting promise:',prom);
+  // let longpromise = conventionalPromiseFactory( somethingelse - 32, true);
+  // await console.log('somethingelse:',somethingelse);
+  // console.log('non waiting somethingelse:',somethingelse);
+  // //somethingelse.then(console.log('hello'))
+  // //.catch( error => {console.log('error occured',error);});
+  // await console.log('long promise',longpromise);
+  // console.log('After Await');
+  // console.log('long promise',longpromise);
+  // console.log('Never wait');
 }
 
 async function queryAll3APIBuildJSONOfUserData(from_placename, dateStats) {
   console.log('queryAll3 called');
-  
-  console.log(`Query all3 received these dateStats:$`,dateStats);
+
+  console.log(`Query all3 received these dateStats:$`, dateStats);
 
   let USEROUTPUTDATA = {};
 
   getLatLongLocationPromise(from_placename) // Query 1
-  .then( res => res.json() )
-  .then( json_Location => {
-    //TODO Remove
-    console.log('Getting Weather promise');
-    if (json_Location.exists == false || json_Location.exists == null ) {
-      USEROUTPUTDATA = createErrorUserData();
-      throw 'Unknown location';
-    }
-    // convert latitude and longitude to get weather
-    return getWeatherPromise(json_Location, dateStats.typeOfWeathercast, dateStats.month_day); //Query 2
-  })
-  .then( weather_data => {
-    // TODO Store weather data and labels
-    console.log('Received weather data from getWeatherPromise');
-    console.log('Error neturalizing output');
-  })
-  .then( () => {
-    // Get image
-    // TODO REMOVE
-    console.log('Getting Pixabay Image URL ');
-    return fetchPixabayImageURLFromServer(from_placename); // Query 3
-  })
-  .then( imageURL => {
-    // store image data
-    // TODO REMOVE
-    console.log('populating useroutdata');
-    if (imageURL != null) {
-      USEROUTPUTDATA.imageURL = imageURL;
-    } else {
-      USEROUTPUTDATA.caption = 'No Image Available';
-    }
-  })
-  .catch( function(error) {
-    console.log('Sorry error with getting location or weather',error);
-  });
+    .then(res => res.json())
+    .then(json_Location => {
+      //TODO Remove
+      console.log('Getting Weather promise');
+      if (json_Location.exists == false || json_Location.exists == null) {
+        USEROUTPUTDATA = createErrorUserData();
+        throw 'Unknown location';
+      }
+      // convert latitude and longitude to get weather
+      return getWeatherPromise(json_Location, dateStats.typeOfWeathercast, dateStats.month_day); //Query 2
+    })
+    .then(weather_data => {
+      // TODO Store weather data and labels
+      console.log('Received weather data from getWeatherPromise');
+      console.log('Error neturalizing output');
+    })
+    .then(() => {
+      // Get image
+      // TODO REMOVE
+      console.log('Getting Pixabay Image URL ');
+      return fetchPixabayImageURLFromServer(from_placename); // Query 3
+    })
+    .then(imageURL => {
+      // store image data
+      // TODO REMOVE
+      console.log('populating useroutdata');
+      if (imageURL != null) {
+        USEROUTPUTDATA.imageURL = imageURL;
+      } else {
+        USEROUTPUTDATA.caption = 'No Image Available';
+      }
+    })
+    .catch(function (error) {
+      console.log('Sorry error with getting location or weather', error);
+    });
   return USEROUTPUTDATA;
 }
 
