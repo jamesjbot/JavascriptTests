@@ -127,11 +127,17 @@ function asyncWithCallback() {
 }
 
 async function funcWithCallback(func) {
-  func('Jude');
+  let response = await func('Jude');
+  displayConsolelog(response);
+}
+
+function displayConsolelog(message) {
+  console.log(message);
 }
 
 function callback(message) {
   console.log(`Hey ${message}!`);
+  return 'hello world';
 }
 
 function asyncWrapper() {
