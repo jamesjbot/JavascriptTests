@@ -129,6 +129,13 @@ function asyncWithCallback() {
 async function funcWithCallback(func) {
   let response = await func('Jude');
   displayConsolelog(response);
+  console.log('display first');
+  console.log('display second');
+  console.log('display third');
+  let secondResponse = await conventionalPromiseFactory(2, true, 'Life, the universe, everything')
+  displayConsolelog(secondResponse);
+  console.log('display fourth');
+  console.log('display fifth');
 }
 
 function displayConsolelog(message) {
@@ -279,22 +286,26 @@ function sequentialPromises() {
     .then(() => console.log('\nComplete Sequential Processing'));
 }
 
-function conventionalPromiseFactory(delay, eventuallyResolve) {
+function conventionalPromiseFactory(delay, eventuallyResolveTrueOrFalse, resolveMessage) {
   return new Promise((resolve, reject) => {
     let returnObject =
-      genericDelayedFunction(resolve, reject, delay,
-        'Conventional Promise Factory',
-        eventuallyResolve);
-    console.log(`What is ${delay} second object are we resolving ${eventuallyResolve}`, returnObject);
+      genericDelayedFunction(resolve, 
+                             reject, 
+                             delay,
+                             'Conventional Promise Factory',
+                             eventuallyResolveTrueOrFalse,
+                             resolveMessage);
+    console.log(`What is ${delay} second object are we resolving ${eventuallyResolveTrueOrFalse}`, returnObject);
   });
 }
 
 
 function genericDelayedFunction(promiseResolveMethod,
-  promiseRejectMethod,
-  delayTimeInSeconds,
-  extraMessage,
-  forceResolve) {
+                                promiseRejectMethod,
+                                delayTimeInSeconds,
+                                extraMessage,
+                                forceResolve,
+                                resolveMessage) {
   console.log(`${delayTimeInSeconds} second delay function`);
   let timeInMS = delayTimeInSeconds * 1000;
   setTimeout(messageFromImportantWork,
@@ -302,12 +313,18 @@ function genericDelayedFunction(promiseResolveMethod,
     timeInMS.toString() + 'ms delay',
     promiseResolveMethod,
     promiseRejectMethod,
-    extraMessage, forceResolve);
+    extraMessage, 
+    forceResolve,
+    resolveMessage);
 }
 
 
-function messageFromImportantWork(wrappingParentId, resolveMethod,
-  rejectMethod, messageToPass, forceResolve) {
+function messageFromImportantWork(wrappingParentId, 
+                                  resolveMethod,
+                                  rejectMethod, 
+                                  messageToPass, 
+                                  forceResolve,
+                                  resolveMessage = '42') {
   let package = 'hello world';
   console.log(`'${wrappingParentId}' seconds Delay\'s Work Completed and package:${package} and extra message ${messageToPass}`);
   if (forceResolve == false) {
@@ -315,7 +332,7 @@ function messageFromImportantWork(wrappingParentId, resolveMethod,
     rejectMethod('Was told to reject');
   } else {
     console.log('resolving');
-    resolveMethod('42');
+    resolveMethod(resolveMessage);
   }
   return 'Some Important Work Done!';
 }
