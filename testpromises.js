@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 16;
+let testNumber = 17;
 
 switch (testNumber) {
 
@@ -84,6 +84,12 @@ switch (testNumber) {
       break;
     }
 
+  case 17:
+    {
+      manipulateDateObject();
+      break;
+    }
+
   default:
     {
       break;
@@ -103,6 +109,18 @@ switch (testNumber) {
 *
 *
 ********/
+
+function manipulateDateObject() {
+  let todaysDate = new Date(Date.now());
+  todaysDate.setHours(0);
+  todaysDate.setMinutes(0);
+  todaysDate.setSeconds(0);
+  todaysDate.setMilliseconds(0);
+  console.log(todaysDate);
+  let travelDate = new Date(2021, 04, 18);
+  console.log(travelDate);
+
+}
 
 async function cleanLookingPromises() {
   try {
