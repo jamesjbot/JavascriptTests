@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 17;
+let testNumber = 18;
 
 switch (testNumber) {
 
@@ -90,6 +90,13 @@ switch (testNumber) {
       break;
     }
 
+  case 18:
+    {
+      futureDate(7);
+      break;
+    }
+
+  
   default:
     {
       break;
@@ -119,7 +126,12 @@ function manipulateDateObject() {
   console.log(todaysDate);
   let travelDate = new Date(2021, 04, 18);
   console.log(travelDate);
+}
 
+function futureDate(daysAhead) {
+  let travelDate = new Date(2021, 04, 18);
+  let futureDate = new Date(travelDate.getTime() +  (daysAhead * 24 * 60 * 60 * 1000));
+  console.log(futureDate);
 }
 
 async function cleanLookingPromises() {
