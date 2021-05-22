@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 18;
+let testNumber = 19;
 
 switch (testNumber) {
 
@@ -96,6 +96,12 @@ switch (testNumber) {
       break;
     }
 
+
+  case 19:
+    {
+      readAFile();
+      break;
+    }
   
   default:
     {
@@ -116,6 +122,18 @@ switch (testNumber) {
 *
 *
 ********/
+
+function readAFile() {
+  const fs = require('fs')
+
+  fs.readFile('./test.txt', 'utf8' , (err, data) => {
+  if (err) {
+    console.error(err)
+    return
+  }
+  console.log(data)
+})
+}
 
 function manipulateDateObject() {
   let todaysDate = new Date(Date.now());
