@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 19;
+let testNumber = 20;
 
 switch (testNumber) {
 
@@ -103,6 +103,12 @@ switch (testNumber) {
       break;
     }
   
+  case 20:
+    {
+      requireBodyParser();
+      break;
+    }
+
   default:
     {
       break;
@@ -122,6 +128,10 @@ switch (testNumber) {
 *
 *
 ********/
+
+function requireBodyParser() {
+  var module = require("body-parser");
+}
 
 function readAFile() {
   const fs = require('fs')
