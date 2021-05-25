@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 20;
+let testNumber = 21;
 
 switch (testNumber) {
 
@@ -109,6 +109,11 @@ switch (testNumber) {
       break;
     }
 
+  case 21: 
+    {
+      dateFilterLogic();
+    }
+
   default:
     {
       break;
@@ -128,6 +133,13 @@ switch (testNumber) {
 *
 *
 ********/
+
+function dateFilterLogic() {
+  let today = new Date(Date.now());
+  let targetDate = new Date('2021-06-31');
+  targetDate + 1;
+  console.log(`today: ${today}, target: ${targetDate}`);
+}
 
 function requireBodyParser() {
   var module = require("body-parser");
