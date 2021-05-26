@@ -136,9 +136,14 @@ switch (testNumber) {
 
 function dateFilterLogic() {
   let today = new Date(Date.now());
-  let targetDate = new Date('2021-06-31');
-  targetDate + 1;
-  console.log(`today: ${today}, target: ${targetDate}`);
+  let targetDate = new Date('2021-05-25T00:00:01');
+  console.log(`today: ${today},\ntargt: ${targetDate}`);
+  console.log(`difference ${targetDate - today}`);
+  if (today < targetDate) {
+    console.log('today is less than target');
+  } else {
+    console.log('today is >= target');
+  }
 }
 
 function requireBodyParser() {
