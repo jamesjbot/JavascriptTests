@@ -21,7 +21,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 21;
+let testNumber = 22;
 
 switch (testNumber) {
 
@@ -102,16 +102,23 @@ switch (testNumber) {
       readAFile();
       break;
     }
-  
+
   case 20:
     {
       requireBodyParser();
       break;
     }
 
-  case 21: 
+  case 21:
     {
       dateFilterLogic();
+      break;
+    }
+
+  case 22:
+    {
+      exceptionTest();
+      break;
     }
 
   default:
@@ -134,6 +141,34 @@ switch (testNumber) {
 *
 ********/
 
+function exceptionTest() {
+  try {
+    exceptionOne();
+  } catch (error) {
+    console.log(`Caught Error in Exception top`, error);
+  }
+}
+
+function exceptionOne() {
+  try {
+    exceptionTwo();
+  } catch (error) {
+    console.log(`Caught error in Exception one`, error);
+    throw error;
+  }
+}
+
+function exceptionTwo() {
+  try {
+    throw new Error('Custom message');
+  } catch (error) {
+    console.log('Caught error in Exception two',error);
+    console.log(`Error message:${error.message}\nError name: ${error.name}`);
+    throw error;
+  }
+}
+
+
 function dateFilterLogic() {
   let today = new Date(Date.now());
   let targetDate = new Date('2021-05-25T00:00:01');
@@ -153,13 +188,13 @@ function requireBodyParser() {
 function readAFile() {
   const fs = require('fs')
 
-  fs.readFile('./test.txt', 'utf8' , (err, data) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-  console.log(data)
-})
+  fs.readFile('./test.txt', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    console.log(data)
+  })
 }
 
 function manipulateDateObject() {
@@ -175,7 +210,7 @@ function manipulateDateObject() {
 
 function futureDate(daysAhead) {
   let travelDate = new Date(2021, 04, 18);
-  let futureDate = new Date(travelDate.getTime() +  (daysAhead * 24 * 60 * 60 * 1000));
+  let futureDate = new Date(travelDate.getTime() + (daysAhead * 24 * 60 * 60 * 1000));
   console.log(futureDate);
 }
 
@@ -364,23 +399,23 @@ function sequentialPromises() {
 function conventionalPromiseFactory(delay, eventuallyResolveTrueOrFalse, resolveMessage) {
   return new Promise((resolve, reject) => {
     let returnObject =
-      genericDelayedFunction(resolve, 
-                             reject, 
-                             delay,
-                             'Conventional Promise Factory',
-                             eventuallyResolveTrueOrFalse,
-                             resolveMessage);
+      genericDelayedFunction(resolve,
+        reject,
+        delay,
+        'Conventional Promise Factory',
+        eventuallyResolveTrueOrFalse,
+        resolveMessage);
     console.log(`What is ${delay} second object are we resolving ${eventuallyResolveTrueOrFalse}`, returnObject);
   });
 }
 
 
 function genericDelayedFunction(promiseResolveMethod,
-                                promiseRejectMethod,
-                                delayTimeInSeconds,
-                                extraMessage,
-                                forceResolve,
-                                resolveMessage) {
+  promiseRejectMethod,
+  delayTimeInSeconds,
+  extraMessage,
+  forceResolve,
+  resolveMessage) {
   console.log(`${delayTimeInSeconds} second delay function`);
   let timeInMS = delayTimeInSeconds * 1000;
   setTimeout(messageFromImportantWork,
@@ -388,18 +423,18 @@ function genericDelayedFunction(promiseResolveMethod,
     timeInMS.toString() + 'ms delay',
     promiseResolveMethod,
     promiseRejectMethod,
-    extraMessage, 
+    extraMessage,
     forceResolve,
     resolveMessage);
 }
 
 
-function messageFromImportantWork(wrappingParentId, 
-                                  resolveMethod,
-                                  rejectMethod, 
-                                  messageToPass, 
-                                  forceResolve,
-                                  resolveMessage = '42') {
+function messageFromImportantWork(wrappingParentId,
+  resolveMethod,
+  rejectMethod,
+  messageToPass,
+  forceResolve,
+  resolveMessage = '42') {
   let package = 'hello world';
   console.log(`'${wrappingParentId}' seconds Delay\'s Work Completed and package:${package} and extra message ${messageToPass}`);
   if (forceResolve == false) {
