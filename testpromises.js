@@ -1,6 +1,7 @@
 
 /*jshint esversion:8*/
 
+const { objectExpression } = require("@babel/types");
 const { reject, delay } = require("q");
 
 // Goal Explore Promises and timers in Node.js
@@ -21,7 +22,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 22;
+let testNumber = 23;
 
 switch (testNumber) {
 
@@ -121,6 +122,12 @@ switch (testNumber) {
       break;
     }
 
+  case 23:
+    {
+      testObjectOriented();
+      break
+    }
+
   default:
     {
       break;
@@ -140,6 +147,21 @@ switch (testNumber) {
 *
 *
 ********/
+
+function testObjectOriented() {
+  const james = createNewPerson('James');
+  james.name;
+  james.greeting();
+}
+
+function createNewPerson(name) {
+  const obj = {};
+  obj.name = name;
+  obj.greeting = function() {
+    console.log('Hi! I\'m ' + obj.name + '.');
+  };
+  return obj;
+}
 
 function exceptionTest() {
   try {
@@ -162,7 +184,7 @@ function exceptionTwo() {
   try {
     throw new Error('Custom message');
   } catch (error) {
-    console.log('Caught error in Exception two',error);
+    console.log('Caught error in Exception two', error);
     console.log(`Error message:${error.message}\nError name: ${error.name}`);
     throw error;
   }
