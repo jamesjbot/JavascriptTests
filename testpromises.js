@@ -157,8 +157,13 @@ switch (testNumber) {
 function arrayTests() {
   const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
   console.log(animals.slice(1,3));
+  let temp = [].slice.call(arrayTestGetArray());
+  console.log(temp);
 }
 
+function arrayTestGetArray() {
+  return animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+}
 
 // class Parent(firstName, lastName) {
 //   constructior(firstName, lastName) {
