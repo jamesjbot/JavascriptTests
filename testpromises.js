@@ -22,7 +22,7 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 23;
+let testNumber = 24;
 
 switch (testNumber) {
 
@@ -124,7 +124,13 @@ switch (testNumber) {
 
   case 23:
     {
-      testObjectOriented();
+      //testObjectOriented();
+      break
+    }
+
+  case 24:
+    {
+      arrayTests();
       break
     }
 
@@ -147,59 +153,66 @@ switch (testNumber) {
 *
 *
 ********/
-class Parent (firstName, lastName) {
-  constructior(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
 
-    this.getName = function() {
-      return "User's name: " + this.firstName + " " + this.lastName;
-    }
-  }
+function arrayTests() {
+  const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+  console.log(animals.slice(1,3));
 }
 
-var Parent1 = {
-  firstName: "John",
-  lastName: "Smith",
-  getName: function() {
-    return "User's name: " + this.firstName + " " + this.lastName;
-  }
 
-}
+// class Parent(firstName, lastName) {
+//   constructior(firstName, lastName) {
+//     this.firstName = firstName;
+//     this.lastName = lastName;
 
-function testObjectOriented() {
-  const james = createNewPerson('James');
-  james.name;
-  james.greeting();
-  //console.log(process.versions)
-  class User {
-    constructor(firstName, lastName, dateOfBirth) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.dateOfBirth = dateOfBirth;
-  
-      this.getName = function() {
-        return "User's name: " + this.firstName + " " + this.lastName;
-      }
-    }
-  }
-  var user001 = new User("John", "Smith", 1985);
-  console.log(user001.getName());
+//     this.getName = function () {
+//       return "User's name: " + this.firstName + " " + this.lastName;
+//     }
+//   }
+// }
 
-  var Parent2 = Object.create(Parent1);
-  Parent2.firstName = "Jane";
-  Parent2.lastName = "King";
-  console.log(Parent2.getName());
-}
+// var Parent1 = {
+//   firstName: "John",
+//   lastName: "Smith",
+//   getName: function () {
+//     return "User's name: " + this.firstName + " " + this.lastName;
+//   }
 
-function createNewPerson(name) {
-  const obj = {};
-  obj.name = name;
-  obj.greeting = function() {
-    console.log('Hi! I\'m ' + obj.name + '.');
-  };
-  return obj;
-}
+// }
+
+// function testObjectOriented() {
+//   const james = createNewPerson('James');
+//   james.name;
+//   james.greeting();
+//   //console.log(process.versions)
+//   class User {
+//     constructor(firstName, lastName, dateOfBirth) {
+//       this.firstName = firstName;
+//       this.lastName = lastName;
+//       this.dateOfBirth = dateOfBirth;
+
+//       this.getName = function () {
+//         return "User's name: " + this.firstName + " " + this.lastName;
+//       }
+//     }
+//   }
+//   var user001 = new User("John", "Smith", 1985);
+//   console.log(user001.getName());
+
+//   var Parent2 = Object.create(Parent1);
+//   Parent2.firstName = "Jane";
+//   Parent2.lastName = "King";
+//   console.log(Parent2.getName());
+// }
+
+// function createNewPerson(name) {
+//   const obj = {};
+//   obj.name = name;
+//   obj.greeting = function () {
+//     console.log('Hi! I\'m ' + obj.name + '.');
+//   };
+//   return obj;
+// }
 
 
 
