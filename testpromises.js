@@ -30,6 +30,21 @@ class Rectangle {
   }
 }
 
+class Square {
+  constructor() {}
+  draw() {
+    console.log('This is a Square');
+  }
+}
+
+class Circle {
+  constructor() {
+  }
+  draw() {
+    console.log('This is a Circle');
+  }
+}
+
 let testNumber = 25;
 
 switch (testNumber) {
@@ -144,6 +159,7 @@ switch (testNumber) {
 
   case 25:
     {
+
       shapeFactoryTest();
       break;
     }
@@ -176,17 +192,9 @@ switch (testNumber) {
 //   }
 // }
 
-var Square = function () {
-  this.draw = function () {
-    console.log('This is a Square');
-  };
-};
 
-var Circle = function() {
-  this.draw = function() {
-    console.log('This is a Circle');
-  }
-}
+
+
 
 function shapeFactory() {
   this.createShape = function (shapeType) {
@@ -212,11 +220,11 @@ function shapeFactory() {
 function shapeFactoryTest() {
   var factory = new shapeFactory();
   var rectangle = factory.createShape('rectangle');
-  //var square = factory.createShape('square');
-  //var circle = factory.createShape('circle');
+  var square = factory.createShape('square');
+  var circle = factory.createShape('circle');
   rectangle.draw();
-  //square.draw();
-  //circle.draw();
+  square.draw();
+  circle.draw();
 }
 
 function arrayTests() {
