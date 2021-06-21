@@ -22,7 +22,15 @@ const { reject, delay } = require("q");
 *
 */
 
-let testNumber = 24;
+class Rectangle {
+  consturctor() {
+  }
+  draw() {
+      console.log('This is a Rectangle');
+  }
+}
+
+let testNumber = 25;
 
 switch (testNumber) {
 
@@ -134,6 +142,12 @@ switch (testNumber) {
       break
     }
 
+  case 25:
+    {
+      shapeFactoryTest();
+      break;
+    }
+  
   default:
     {
       break;
@@ -146,13 +160,64 @@ switch (testNumber) {
 *
 * functions
 *
-*/
+*/0
 /*
 *
 * A promise can only take a function(param1, param2)
 *
 *
 ********/
+
+// class Rectangle {
+//   consturctor() {
+//     this.draw = function() {
+//       console.log('This is a Rectangle');
+//     }
+//   }
+// }
+
+var Square = function () {
+  this.draw = function () {
+    console.log('This is a Square');
+  };
+};
+
+var Circle = function() {
+  this.draw = function() {
+    console.log('This is a Circle');
+  }
+}
+
+function shapeFactory() {
+  this.createShape = function (shapeType) {
+    var shape;
+    switch(shapeType) {
+      case 'rectangle':
+        shape = new Rectangle();
+        break;
+      case 'square':
+        shape = new Square();
+        break;
+      case 'circle':
+        shape = new Circle();
+        break;
+        default:
+          shape = new Rectangle();
+          break;
+      }
+      return shape;
+  }
+}
+
+function shapeFactoryTest() {
+  var factory = new shapeFactory();
+  var rectangle = factory.createShape('rectangle');
+  //var square = factory.createShape('square');
+  //var circle = factory.createShape('circle');
+  rectangle.draw();
+  //square.draw();
+  //circle.draw();
+}
 
 function arrayTests() {
   const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
